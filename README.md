@@ -23,5 +23,5 @@ Posteriormente rode os seguintes comando na ordem:
 
 Criar um usuário e uma senha para a parte de administração
 
-   python3 manage.py createsuperuser --username=joe --email=joe@example.com
+    python3 manage.py createsuperuser --username=joe --email=joe@example.com
 
