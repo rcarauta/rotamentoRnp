@@ -1,6 +1,16 @@
 Comandos para configuração do projeto roteamentornp localmente:
 
-Primeiro deve ser configurado no settings.py o caminho usuário e senha do bando de dados:
+Instalar a bibliotecas necessárias:
+
+        pip3 install Django
+
+        sudo apt install libpq-dev python3-dev
+
+        pip3 install psycopg2
+
+
+
+Deve ser configurado no settings.py o caminho usuário e senha do bando de dados:
 
 
     DATABASES = {
