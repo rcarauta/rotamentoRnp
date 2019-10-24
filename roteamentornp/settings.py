@@ -27,8 +27,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+{
+    "python.linting.pylintArgs": [
+        "--load-plugins=pylint_django"
+    ]
+}
+
 
 # Application definition
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',

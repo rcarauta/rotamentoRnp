@@ -1,1 +1,7 @@
 <h1>será criado a aplicação de melhor rota da rnp aqui!</h1>
+<hr/>
+<select>
+    {% for option in options %}
+    <option  value="{{option.id}}">{{ option.estado }}</option>
+    {% endfor %}
+</select>
