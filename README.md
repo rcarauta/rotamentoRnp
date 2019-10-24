@@ -52,7 +52,7 @@ Acessar o endereço http://localhost:8000/rotas/ para acesso o template básico 
 
 Configurando a rota de administração
 
-        ./manage.py shell
+        python3 manage.py shell
         from django.contrib.sites.models import Site
         site = Site()
         site.domain = 'localhost'
