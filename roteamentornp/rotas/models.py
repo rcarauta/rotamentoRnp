@@ -1,10 +1,28 @@
 from django.db import models
 
-class No(models.Model):
-    origem = models.CharField(max_length=100)
-    destino = models.ForeignKey("No", on_delete=models.CASCADE)
-    peso = models.IntegerField()
+
+class Estado(models.Model):
+    estado = models.CharField(max_length=100)
 
     def __unicode__(self):
-        return self.origem
+        return self.estado
+
+class No(models.Model):
+    data  = models.DateTimeField()
+    popEnv = models.CharField(max_length=100)
+    popDest = models.ForeignKey('No', null=True, on_delete=models.SET_NULL)
+    perdaMdn = models.IntegerField()
+    latMin = models.IntegerField()
+    latMed = models.IntegerField()
+    latMax = models.IntegerField()
+    stdDvn = models.IntegerField()
+    latTenPerc = models.IntegerField()
+    latMdn = models.IntegerField()
+    latNinePerc = models.IntegerField()
+    estado = models.ForeignKey('Estado', null=True, on_delete=models.SET_NULL)
+
+
+
+    def __unicode__(self):
+        return self.popEnv
 
