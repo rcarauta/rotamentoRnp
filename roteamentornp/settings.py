@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'roteamentornp.rotas'
+    'roteamentornp.rotas',
+    'roteamentornp.migracao'
 ]
 
 MIDDLEWARE = [

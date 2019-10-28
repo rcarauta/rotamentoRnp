@@ -1,7 +1,20 @@
 <h1>será criado a aplicação de melhor rota da rnp aqui!</h1>
 <hr/>
-<select>
-    {% for option in options %}
-    <option  value="{{option.id}}">{{ option.estado }}</option>
-    {% endfor %}
-</select>
+
+<form action="/rotas/montar" method="post">
+    {% csrf_token %}
+   <label>Selecione uma origem:</label>
+    <select name="origem">
+        {% for option in options %}
+        <option  value="{{option.id}}">{{ option.estado }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Selecione um destino:</label>
+    <select name="destino">
+        {% for option in options %}
+        <option value="{{option.id}}">{{ option.estado }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Criar Rota" />
+</form>

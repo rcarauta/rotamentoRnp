@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from roteamentornp.rotas.views import index
+from roteamentornp.rotas.views import index, montarRota 
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('rotas/', index)
+    path('rotas/', index),
+    path('rotas/montar', montarRota)
 ]

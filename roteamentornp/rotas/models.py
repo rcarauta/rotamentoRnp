@@ -8,21 +8,25 @@ class Estado(models.Model):
         return self.estado
 
 class No(models.Model):
-    data  = models.DateTimeField()
-    popEnv = models.CharField(max_length=100)
-    popDest = models.ForeignKey('No', null=True, on_delete=models.SET_NULL)
-    perdaMdn = models.IntegerField()
-    latMin = models.IntegerField()
-    latMed = models.IntegerField()
-    latMax = models.IntegerField()
-    stdDvn = models.IntegerField()
-    latTenPerc = models.IntegerField()
-    latMdn = models.IntegerField()
-    latNinePerc = models.IntegerField()
-    estado = models.ForeignKey('Estado', null=True, on_delete=models.SET_NULL)
-
+    data_migration  = models.DateTimeField()
+    pop_env = models.ForeignKey(Estado, null=True,related_name="pop_env_estado", on_delete=models.SET_NULL)
+    pop_dest = models.ForeignKey(Estado, null=True,related_name="pop_dest_estado", on_delete=models.SET_NULL)
+    perda_mdn = models.DecimalField(max_digits=50, decimal_places=20)
+    lat_min = models.DecimalField(max_digits=50, decimal_places=20)
+    lat_med = models.DecimalField(max_digits=50, decimal_places=20)
+    lat_max = models.DecimalField(max_digits=50, decimal_places=20)
+    std_dvn = models.DecimalField(max_digits=50, decimal_places=20)
+    lat_ten_perc = models.DecimalField(max_digits=50, decimal_places=20)
+    lat_mdn = models.DecimalField(max_digits=50, decimal_places=20)
+    lat_nine_perc = models.DecimalField(max_digits=50, decimal_places=20)
 
 
     def __unicode__(self):
-        return self.popEnv
+        return self.data_migration
+
+
+class Ligacao(models.Model):
+    origem = models.ForeignKey(Estado, null=True,related_name="origem_estado", on_delete=models.SET_NULL)
+    destino = models.ForeignKey(Estado, null=True,related_name="destino_estado", on_delete=models.SET_NULL)
+    link_ativo = models.BooleanField(default=True)
 
