@@ -1,6 +1,6 @@
-from roteamentornp.rotas.models import No
-from roteamentornp.rotas.models import Estado 
-from roteamentornp.rotas.models import Ligacao 
+#from roteamentornp.rotas.models import No
+#from roteamentornp.rotas.models import Estado 
+#from roteamentornp.rotas.models import Ligacao 
 
 class ProcuraMelhorRota:
 
@@ -12,10 +12,11 @@ class ProcuraMelhorRota:
 
 
     def findNosEstado(self, estado):
-        estatoObjeto = Estado.objects.filter(estado=estado)
-        if estatoObjeto:
-            return estatoObjeto
-        return None
+        pass
+        #estatoObjeto = Estado.objects.filter(estado=estado)
+        #if estatoObjeto:
+         #   return estatoObjeto
+        #return None
 
 
 class MontaRota:
@@ -24,8 +25,9 @@ class MontaRota:
         pass
 
     def montarRota(self,origem,destino):
-        listaRotas = Ligacao.objects.filter(origem=origem)
-        print(listaRotas)
+        pass
+        #listaRotas = Ligacao.objects.filter(origem=origem)
+        #print(listaRotas)
         
 
 

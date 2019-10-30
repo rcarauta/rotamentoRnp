@@ -1,6 +1,6 @@
 from django.contrib import admin
-from roteamentornp.rotas.models import No
-from roteamentornp.rotas.models import Estado
+from roteamentornp.rotas.models import Estacao
+from roteamentornp.rotas.models import Distancia
 
-admin.site.register(No)
-admin.site.register(Estado)
+admin.site.register(Estacao)
+admin.site.register(Distancia)

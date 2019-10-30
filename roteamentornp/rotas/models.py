@@ -1,32 +1,41 @@
 from django.db import models
 
 
-class Estado(models.Model):
-    estado = models.CharField(max_length=100)
+class Estacao(models.Model):
+    estacao = models.CharField(max_length=100)
 
     def __unicode__(self):
-        return self.estado
+        return self.estacao
 
-class No(models.Model):
-    data_migration  = models.DateTimeField()
-    pop_env = models.ForeignKey(Estado, null=True,related_name="pop_env_estado", on_delete=models.SET_NULL)
-    pop_dest = models.ForeignKey(Estado, null=True,related_name="pop_dest_estado", on_delete=models.SET_NULL)
-    perda_mdn = models.DecimalField(max_digits=50, decimal_places=20)
-    lat_min = models.DecimalField(max_digits=50, decimal_places=20)
-    lat_med = models.DecimalField(max_digits=50, decimal_places=20)
-    lat_max = models.DecimalField(max_digits=50, decimal_places=20)
-    std_dvn = models.DecimalField(max_digits=50, decimal_places=20)
-    lat_ten_perc = models.DecimalField(max_digits=50, decimal_places=20)
-    lat_mdn = models.DecimalField(max_digits=50, decimal_places=20)
-    lat_nine_perc = models.DecimalField(max_digits=50, decimal_places=20)
 
+class Distancia(models.Model):
+    nome = models.CharField(max_length=100)
+    sexo = models.CharField(max_length=1)
+    nascimento = models.DateTimeField()
+    pais = models.CharField(max_length=2)
+    cidade = models.CharField(max_length=100)
+    uf = models.CharField(max_length=2)
+    datacadastramento = models.DateTimeField()
+    projeto = models.CharField(max_length=100)
+    datacorrida = models.DateTimeField()
+    diasemana = models.CharField(max_length=100)
+    horaretirada = models.TimeField()
+    estacaoretirada = models.ForeignKey(Estacao, null=True,related_name="estacaoretirada_fk", on_delete=models.SET_NULL)
+    areaestacaoretirada = models.CharField(max_length=100)
+    enderecoestacaoretirada = models.CharField(max_length=200)
+    meioretirada = models.CharField(max_length=100)
+    horadevolucao = models.TimeField()
+    estacaodevolucao = models.ForeignKey(Estacao, null=True,related_name="estacaodevolucao_fk", on_delete=models.SET_NULL)
+    areaestacaodevolucao = models.CharField(max_length=100)
+    enderecoestacaodevolucao = models.CharField(max_length=200)
+    duracaocorrida = models.CharField(max_length=100)
 
     def __unicode__(self):
-        return self.data_migration
+        return self.nome
 
 
-class Ligacao(models.Model):
-    origem = models.ForeignKey(Estado, null=True,related_name="origem_estado", on_delete=models.SET_NULL)
-    destino = models.ForeignKey(Estado, null=True,related_name="destino_estado", on_delete=models.SET_NULL)
-    link_ativo = models.BooleanField(default=True)
+# class Ligacao(models.Model):
+#     origem = models.ForeignKey(Estado, null=True,related_name="origem_estado", on_delete=models.SET_NULL)
+#     destino = models.ForeignKey(Estado, null=True,related_name="destino_estado", on_delete=models.SET_NULL)
+#     link_ativo = models.BooleanField(default=True)
 

@@ -1,5 +1,6 @@
-\copy migracao_no(data_migration,pop_env,pop_dest,perda_mdn,lat_min,lat_med,lat_max,std_dvn,lat_ten_perc,lat_mdn,lat_nine_perc) 
-from '/home/renato/Downloads/mestrado/algoritmo/dados/medicoesRedeIpe_09-2018_V1.csv' csv;
+\copy migracao_no(nome,sexo,nascimento,pais,cidade,uf,datacadastramento,projeto,datacorrida,diasemana,horaretirada,estacaoretirada,areaestacaoretirada,enderecoestacaoretirada,meioretirada,horadevolucao,
+estacaodevolucao,areaestacaodevolucao,enderecoestacaodevolucao,duracaocorrida) 
+from '/media/renato/SSD/desenvolvimento/python/dados/-bikebrasilia09-2019---sem-os-dados-pessoais.ods' ods;
 
 
 insert into rotas_estado(estado) values ('AC');
