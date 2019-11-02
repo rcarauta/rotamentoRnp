@@ -47,7 +47,7 @@ class MontaRota:
         self.vertices =  Estado.objects.all()
        # self.grafo = [[0] * len(self.list_vertice_id) for i in range(len(self.list_vertice_id))]
         self.grafo = defaultdict(list)
-        self.vertexes = {}
+        self.vertexes = defaultdict(list)
     
 
     def add_pesos(self, src, dest):
@@ -60,8 +60,8 @@ class MontaRota:
     def add_aresta(self, src, dest):
         cost = self.add_pesos(src,dest)
         self.grafo[src].append([dest, cost])
-        self.vertexes[src] = src
-        self.vertexes[dest] = dest
+        self.vertexes[src].append(dest)
+       # self.vertexes[dest] = dest
 
 
     def montarGrafo(self):
@@ -69,7 +69,7 @@ class MontaRota:
         for i in range(len(self.todasRotas)):
             rota = self.todasRotas[i]
             self.add_aresta(rota.origem_id, rota.destino_id)
-        print(self.grafo)
+        print(self.vertexes)
     
 
     def montarRota(self,src,dest):
@@ -91,6 +91,28 @@ class MontaRota:
                     min_heap.insert(v,p[v])
         return p[dest]
 
+
+    def findAllPaths(self, origem,destino, path=[]):
+        path = path + [origem]
+        
+        if origem == destino:
+            return [path]
+
+        if  len(self.vertexes.get(origem)) == 0:
+            return []
+        paths = []
+        for node in self.vertexes[origem]:
+            if node not in path:
+                newpaths = self.findAllPaths(node, destino, path)
+                for newpath in newpaths:
+                    paths.append(newpath)
+        return paths
+
+
+
+            # self.vertexes
+
+            # if path.
 
 
 class EstadosService:
