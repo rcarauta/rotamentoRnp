@@ -17,6 +17,6 @@ def montarRota(request):
      destino = request.POST.get("destino", "")
      rota = MontaRota()
      rota.montarGrafo()
-     rotaMontada = rota.montarRota(int(origem),int(destino))
+     # rotaMontada = rota.montarRota(int(origem),int(destino))
      
 
