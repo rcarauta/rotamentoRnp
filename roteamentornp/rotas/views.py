@@ -18,7 +18,9 @@ def montarRota(request):
      rota = MontaRota()
      rota.montarGrafo()
      paths = rota.findAllPaths(int(origem), int(destino))
+     rota.montarRota(paths)
      print(paths)
+     print(rota.getNumeroRotas())
      # rotaMontada = rota.montarRota(int(origem),int(destino))
      
 

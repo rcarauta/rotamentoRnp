@@ -48,6 +48,7 @@ class MontaRota:
        # self.grafo = [[0] * len(self.list_vertice_id) for i in range(len(self.list_vertice_id))]
         self.grafo = defaultdict(list)
         self.vertexes = defaultdict(list)
+        self.numero_rotas = 0
     
 
     def add_pesos(self, src, dest):
@@ -72,24 +73,34 @@ class MontaRota:
         print(self.vertexes)
     
 
-    def montarRota(self,src,dest):
-        number_vertexes = len(self.vertexes)
-        p = [None for i in range(number_vertexes)]
-        p[src] = 0
-        
-        min_heap = MinHeap()
-        min_heap.insert(src, 0)
+    def montarRota(self, paths=[]):
+        menorPeso = 0
+        melhorRota = []
+        for i in range(len(paths) -1):
+            rota = paths[i]
+            pesoNo = 0
+            for j in range(len(rota) -1):
+                origem = rota[j]
+                destino = rota[j+1]
+                itemPeso = self.grafo.get(origem)
+                pesoNo = pesoNo + self.getKey(destino, itemPeso)
 
-        while min_heap.get_length() > 0:
-            u = min_heap.remove()
+            if menorPeso == 0:
+                menorPeso = pesoNo
+                melhorRota = paths[i]
+            elif pesoNo < menorPeso:
+                menorPeso = pesoNo
+                melhorRota = paths[i]
 
-            for edge in self.grafo[u]:
+        print(menorPeso)
+        print(melhorRota)
 
-                v, cost = edge
-                if  p[v] is None or p[v] > p[u] + cost:
-                    p[v] = p[u] + cost
-                    min_heap.insert(v,p[v])
-        return p[dest]
+
+    def getKey(self, val, dictonary):
+        for item in dictonary:
+            if val == item[0]:
+                return item[1]
+        return None
 
 
     def findAllPaths(self, origem,destino, path=[]):
@@ -105,11 +116,16 @@ class MontaRota:
             if node not in path:
                 newpaths = self.findAllPaths(node, destino, path)
                 for newpath in newpaths:
+                    self.numero_rotas += 1
                     paths.append(newpath)
         return paths
 
 
+    def getNumeroRotas(self):
+        return self.numero_rotas
 
+
+    # https://www.python.org/doc/essays/graphs/
             # self.vertexes
 
             # if path.
