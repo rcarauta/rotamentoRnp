@@ -2,35 +2,13 @@ from roteamentornp.rotas.models import No
 from roteamentornp.rotas.models import Estado 
 from roteamentornp.rotas.models import Ligacao 
 from collections import defaultdict
-import heapq
 import datetime
-
-
-class MinHeap:
-
-	def __init__(self):
-		self._queue = []
-		self._index = 0
-
-	def insert(self, item, priority):
-		heapq.heappush(self._queue, (-priority, self._index, item))
-		self._index += 1
-
-	def remove(self):
-		return heapq.heappop(self._queue)[-1]
-
-	def get_length(self):
-		return len(self._queue)
 
 
 class ProcuraMelhorRota:
 
     def __init__(self):
         pass
-
-    def findBestRota(self, estado):
-         objetoEstado = self.findNosEstado(estado)
-
 
     def findNosEstado(self, estado):
         estatoObjeto = Estado.objects.filter(estado=estado)
@@ -45,7 +23,6 @@ class MontaRota:
         self.vertices_id =  Estado.objects.all().values_list('id', flat=True)
         self.list_vertice_id = list(self.vertices_id)
         self.vertices =  Estado.objects.all()
-       # self.grafo = [[0] * len(self.list_vertice_id) for i in range(len(self.list_vertice_id))]
         self.grafo = defaultdict(list)
         self.vertexes = defaultdict(list)
         self.numero_rotas = 0
@@ -62,7 +39,6 @@ class MontaRota:
         cost = self.add_pesos(src,dest)
         self.grafo[src].append([dest, cost])
         self.vertexes[src].append(dest)
-       # self.vertexes[dest] = dest
 
 
     def montarGrafo(self):
@@ -70,16 +46,15 @@ class MontaRota:
         for i in range(len(self.todasRotas)):
             rota = self.todasRotas[i]
             self.add_aresta(rota.origem_id, rota.destino_id)
-        print(self.vertexes)
     
 
     def montarRota(self, paths=[]):
         menorPeso = 0
         melhorRota = []
-        for i in range(len(paths) -1):
+        for i in range(len(paths) - 1):
             rota = paths[i]
             pesoNo = 0
-            for j in range(len(rota) -1):
+            for j in range(len(rota) - 1):
                 origem = rota[j]
                 destino = rota[j+1]
                 itemPeso = self.grafo.get(origem)
@@ -92,8 +67,20 @@ class MontaRota:
                 menorPeso = pesoNo
                 melhorRota = paths[i]
 
-        print(menorPeso)
-        print(melhorRota)
+        return melhorRota
+ 
+
+
+    def dfinirMelhoresRotas(self, numeroRotas, paths=[]):
+        melhoresRotas = []
+        while numeroRotas > 0:
+            rota = self.montarRota(paths)
+            index = paths.index(rota)
+            paths.pop(index)
+            melhoresRotas.append(rota)
+            numeroRotas -=1
+        return melhoresRotas
+
 
 
     def getKey(self, val, dictonary):
@@ -126,9 +113,6 @@ class MontaRota:
 
 
     # https://www.python.org/doc/essays/graphs/
-            # self.vertexes
-
-            # if path.
 
 
 class EstadosService:
