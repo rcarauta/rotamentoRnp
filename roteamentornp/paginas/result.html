@@ -7,33 +7,38 @@
     function draw(){
         var canvas = document.getElementById('grafo');
         var rotas = {{ melhoresRotas }};
-        var cordA = 200;
+        var cordA = 300;
         var cordB = 20;
         var itensInseridos = [];
         var dicionarioIneridos = [];
         if(canvas.getContext){
             var ctx = canvas.getContext('2d');
-            ctx.beginPath();
-            console.log(rotas);  
-            for(let i = 0; i < rotas.length; i++) {
-                let items = rotas[i];
-                for(let j = 0; j < items.length; j++){
-
-                    var found = itensInseridos.find(function(element) {
-                        return element == items[j];
+            ctx.beginPath();  
+            for(let rota in rotas) {
+                array = rotas[rota];
+                var result = itensInseridos.find(function(v) {
+                    return v == rota; 
+                });
+                if(result == undefined){
+                    ctx.arc(cordA,cordB,15,0,2 * Math.PI);
+                    ctx.stroke();
+                    ctx.fillText(rota, cordA, cordB);
+                    itensInseridos.push(rota);
+                    cordA += 40;
+                    cordB += 40;
+                }
+                for(let item in array){ 
+                    var result = itensInseridos.find(function(v) {
+                        return v == array[item]; 
                     });
-
-
-
-                    if(found == undefined){
-                        ctx.arc(cordA, cordB, 15, 0, 2 * Math.PI);
+                    if(result == undefined){
+                        ctx.arc(cordA,cordB,15,0,2 * Math.PI);
                         ctx.stroke();
-                        ctx.fillText(items[j], cordA, cordB);
+                        ctx.fillText(array[item], cordA, cordB);
+                        itensInseridos.push(array[item]);
                         cordA += 40;
                         cordB += 40;
-                        itensInseridos.push(items[j]); 
-                    } 
-
+                    }
                 }
             }
         } else {
