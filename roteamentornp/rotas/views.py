@@ -23,6 +23,6 @@ def montarRota(request):
      print(melhoresRotas)
      print(len(paths))
      print(melhorRota)
-     return render(request, 'index.html', {'melhoresRotas': melhoresRotas, 'melhorRota': melhorRota, 'numeroRotas':len(paths)})
+     return render(request, 'result.html', {'melhoresRotas': melhoresRotas, 'melhorRota': melhorRota, 'numeroRotas':len(paths)})
      
 
