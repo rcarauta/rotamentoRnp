@@ -1,0 +1,44 @@
+<h1>Resultado da RNP!</h1>
+<hr/>
+<button onclick="draw()">Criar</button>
+<canvas id="grafo" width="600" height="600"></canvas>
+
+<script type="text/javascript">
+    function draw(){
+        var canvas = document.getElementById('grafo');
+        var rotas = {{ melhoresRotas }};
+        var contador = 0;
+        var cordA = 200;
+        var cordB = 20;
+        var itensInseridos = [];
+        if(canvas.getContext){
+            var ctx = canvas.getContext('2d');
+            ctx.beginPath();  
+            for(let i = 0; i < rotas.length; i++) {
+                let items = rotas[i];
+                for(let j = 0; j < items.length; j++){
+
+                    var found = itensInseridos.find(function(element) {
+                        return element == items[j];
+                    });
+
+                    if(found == undefined){
+                        ctx.arc(cordA, cordB, 15, 0, 2 * Math.PI);
+                        ctx.stroke();
+                        ctx.fillText(items[j], cordA, cordB);
+                        contador +=40
+                        cordA += 40;
+                        cordB += 40;
+                        itensInseridos.push(items[j]);
+                    }
+                }
+            }
+        } else {
+
+        }
+    }
+</script> 
+ <style type="text/css">
+    canvas { border: 1px solid black; }
+ </style>
+
