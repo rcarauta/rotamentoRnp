@@ -21,7 +21,8 @@ def montarRota(request):
      melhorRota = rota.montarRota(paths)
      melhoresRotas = rota.dfinirMelhoresRotas(4, paths)
      print(melhoresRotas)
-     print(rota.getNumeroRotas())
+     print(len(paths))
      print(melhorRota)
+     return render(request, 'index.html', {'melhoresRotas': melhoresRotas, 'melhorRota': melhorRota, 'numeroRotas':len(paths)})
      
 

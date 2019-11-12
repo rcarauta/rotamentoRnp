@@ -25,7 +25,6 @@ class MontaRota:
         self.vertices =  Estado.objects.all()
         self.grafo = defaultdict(list)
         self.vertexes = defaultdict(list)
-        self.numero_rotas = 0
     
 
     def add_pesos(self, src, dest):
@@ -103,13 +102,8 @@ class MontaRota:
             if node not in path:
                 newpaths = self.findAllPaths(node, destino, path)
                 for newpath in newpaths:
-                    self.numero_rotas += 1
                     paths.append(newpath)
         return paths
-
-
-    def getNumeroRotas(self):
-        return self.numero_rotas
 
 
     # https://www.python.org/doc/essays/graphs/
