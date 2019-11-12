@@ -19,7 +19,7 @@ def montarRota(request):
      rota.montarGrafo()
      paths = rota.findAllPaths(int(origem), int(destino))
      melhorRota = rota.montarRota(paths)
-     melhoresRotas = rota.dfinirMelhoresRotas(4, paths)
+     melhoresRotas = rota.criarDicionarioRotaSelecionada(rota.dfinirMelhoresRotas(4, paths))
      print(melhoresRotas)
      print(len(paths))
      print(melhorRota)

@@ -34,6 +34,35 @@ class MontaRota:
         return rotas[0].lat_max
         
 
+    def criarDicionarioRotaSelecionada(self,melhoresRotas):
+        rotasDictionary = defaultdict(list)
+        ultimaRota = []
+        for rota in range(len(melhoresRotas)):
+            listRota = melhoresRotas[rota]
+            contador = 0
+            ultimaRota = listRota
+            for item in range(len(listRota) - 1):
+                itemArray = listRota[item]
+                contador+=1
+                if not self.verifyHasItemInDictonary(rotasDictionary, itemArray, listRota[contador]):
+                   rotasDictionary[itemArray].append(listRota[contador])
+
+        rotasDictionary[ultimaRota[len(ultimaRota) -1]].append(0)
+        return dict(rotasDictionary)
+
+
+
+    def verifyHasItemInDictonary(self, dictonary, key, item):
+        items = dictonary.get(key)
+        if items != None:
+            for i in range(len(items)):
+                valor = items[i]
+                if valor == item:
+                    return True
+        return False
+
+
+
     def add_aresta(self, src, dest):
         cost = self.add_pesos(src,dest)
         self.grafo[src].append([dest, cost])
