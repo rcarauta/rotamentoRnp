@@ -1,52 +1,80 @@
-<h1>Resultado da RNP!</h1>
-<hr/>
-<button onclick="draw()">Criar</button>
-<canvas id="grafo" width="600" height="600"></canvas>
 
-<script type="text/javascript">
-    function draw(){
-        var canvas = document.getElementById('grafo');
-        var rotas = {{ melhoresRotas }};
-        var cordA = 300;
-        var cordB = 20;
-        var itensInseridos = [];
-        var dicionarioIneridos = [];
-        if(canvas.getContext){
-            var ctx = canvas.getContext('2d');
-            ctx.beginPath();  
-            for(let rota in rotas) {
-                array = rotas[rota];
-                var result = itensInseridos.find(function(v) {
-                    return v == rota; 
-                });
-                if(result == undefined){
-                    ctx.arc(cordA,cordB,15,0,2 * Math.PI);
-                    ctx.stroke();
-                    ctx.fillText(rota, cordA, cordB);
-                    itensInseridos.push(rota);
-                    cordA += 40;
-                    cordB += 40;
-                }
-                for(let item in array){ 
-                    var result = itensInseridos.find(function(v) {
-                        return v == array[item]; 
-                    });
-                    if(result == undefined){
-                        ctx.arc(cordA,cordB,15,0,2 * Math.PI);
-                        ctx.stroke();
-                        ctx.fillText(array[item], cordA, cordB);
-                        itensInseridos.push(array[item]);
-                        cordA += 40;
-                        cordB += 40;
-                    }
-                }
-            }
-        } else {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Result</title>
 
+    <style>
+    
+    #chart{
+            width: 1000px;
+            height: 1000px;
+            background-color: #f7f7f7;
+            margin: 25px auto;
         }
+        
+
+    </style> 
+</head>
+<body>    
+
+    <div id="chart"></div>
+    <script src="https://d3js.org/d3.v5.min.js"></script> 
+<script>
+    let dados = {{ melhoresRotas }};
+    let nos = [];
+    let chart_width = 1000;
+    let chart_height = 1000;
+
+    for(let i = 0; i < Object.keys(dados).length; i++ ) {
+       nos.push(Object.keys(dados)[i]);      
     }
-</script> 
- <style type="text/css">
-    canvas { border: 1px solid black; }
- </style>
+
+    let svg = d3.select('#chart')
+            .append('svg')
+            .attr('width',chart_width)
+            .attr('height', chart_height);
+
+    let dragLine = svg
+        .append("path")
+        .attr("class", "dragLine hidden")
+        .attr("d", "M0,0 L0,0");
+
+    svg.selectAll('circle')
+        .data(nos)
+        .enter()
+        .append('circle')
+        .attr('r', 30)
+        .attr('cx',function(d, i){
+            return i * (chart_width/ nos.length);
+        })
+        .attr('cy', function(d) {
+            return chart_height - d * 5;
+        })
+        .attr('fill', '#7ED26D')
+        .attr('id', function(d){
+            return 'circle'+d;
+        });
+
+    function updateDragLine() {
+        var coords = d3.mouse(d3.event.currentTarget);
+        dragLine.attr(
+            "d",
+            "M" +
+            mousedownNode.x +
+            "," +
+            mousedownNode.y +
+            "L" +
+            coords[0] +
+            "," +
+            coords[1]
+        );
+    }
+
+</script>
+</body>
+</html>
 
