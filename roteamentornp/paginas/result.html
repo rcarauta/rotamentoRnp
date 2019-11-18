@@ -15,6 +15,12 @@
             background-color: #f7f7f7;
             margin: 25px auto;
         }
+
+        .link {
+            fill:none;
+            stroke: #DDD;
+            stroke-width:2px;
+        }
         
 
     </style> 
@@ -30,7 +36,15 @@
     let chart_height = 1000;
     let posicaoInicialX = 0;
     let posicaoInicialY = 100;
-    let coordenadasDoEstado = {};
+    let coordenadasDoEstado = [];
+    let melhoresRotasLista = {{ melhoresRotasLista }};
+
+    let Coordenate = function(id, x, y) {
+        this.parent = parent;
+        this.id = id;
+        this.x = x || 0;
+        this.y = y || 0;
+    }
 
 
     for(let i = 0; i < Object.keys(dados).length; i++ ) {
@@ -73,9 +87,8 @@
             }  else {
                 posicaoInicialX += 256; 
             }
-
-            Object.assign(coordenadasDoEstado, {[d]: [posicaoInicialX,posicaoInicialY]});
-
+            Object.assign(coordenadasDoEstado, {[d]: new Coordenate(d, posicaoInicialX, posicaoInicialY)});
+    
             return posicaoInicialY;
         })
         .attr('fill', '#7ED26D')
@@ -83,30 +96,30 @@
             return 'circle'+d;
         });
 
-    function draLine() {
-        dragLine
-    }
+
+    let link = d3.line()
+            .x(function(d) { return d.x; })
+            .y(function(d) { return d.y; })
+     .curve(d3.curveLinear);
+
 
     for(let i = 0; i < Object.keys(dados).length; i++) {
-            let keyNo = nos[i];
-            let ligacoesDiretas = dados[keyNo];
-            for(let j = 0; j < dados[keyNo].length; j++){
-                svg.append('path')
-                .attr("d",function(d) {
-                    console.log(ligacoesDiretas);
-                     if(ligacoesDiretas[j] != 0){   
-                        let noCorrodenadasOrigem = coordenadasDoEstado[keyNo];
-                        let noCoordenadasDestino = coordenadasDoEstado[ligacoesDiretas[j]];
-                        return "M" +(noCorrodenadasOrigem[0]+19)+"," +noCorrodenadasOrigem[1] +
-                      "L" +(noCoordenadasDestino[0]) +","+noCoordenadasDestino[1];
-                     }
-                })
-                .attr('stroke',"black")
-                .attr('stroke-width','2');
-
-            }
+        let keyNo = nos[i];
+        let ligacoesDiretas = dados[keyNo];
+        for(let j = 0; j < dados[keyNo].length; j++){
+            svg.append('path')
+            .attr("d",function(d) {
+                    if(ligacoesDiretas[j] != 0){   
+                    let noCorrodenadasOrigem = coordenadasDoEstado[keyNo];
+                    let noCoordenadasDestino = coordenadasDoEstado[ligacoesDiretas[j]];
+                    return "M" +(noCorrodenadasOrigem.x+19)+"," +noCorrodenadasOrigem.y +
+                    "L" +(noCoordenadasDestino.x) +","+noCoordenadasDestino.y;
+                    }
+            })
+            .attr("class", "link");
+        }
     }
-            
+
 
 let text = svg.selectAll('text')
             .data(nos)
@@ -122,7 +135,6 @@ let text = svg.selectAll('text')
                 return posicaoInicialX - 8;
             })
             .attr('y', function(d,i) {
-                console.log(coordenadasDoEstado);
                 if(i % 4 == 0 && i != 0) {
                     posicaoInicialY += 200;
                 } else if(i == 0 ) {
@@ -136,6 +148,11 @@ let text = svg.selectAll('text')
             .attr('font-family', 'sans-serif')
             .attr('font-size','15px')
             .attr('fill','white')
+
+    
+    function transform(d) {
+        return "translate(" + x(d.x) + "," + y(d.y) + ")";
+    }
 
 
 </script>

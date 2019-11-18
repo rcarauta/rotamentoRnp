@@ -19,10 +19,12 @@ def montarRota(request):
      rota.montarGrafo()
      paths = rota.findAllPaths(int(origem), int(destino))
      melhorRota = rota.montarRota(paths)
-     melhoresRotas = rota.criarDicionarioRotaSelecionada(rota.dfinirMelhoresRotas(4, paths))
+     melhoresRotasLista  = rota.dfinirMelhoresRotas(4, paths)
+     melhoresRotas = rota.criarDicionarioRotaSelecionada(melhoresRotasLista)
+     print(melhoresRotasLista)
      print(melhoresRotas)
      print(len(paths))
      print(melhorRota)
-     return render(request, 'result.html', {'melhoresRotas': melhoresRotas, 'melhorRota': melhorRota, 'numeroRotas':len(paths)})
+     return render(request, 'result.html', {'melhoresRotas': melhoresRotas, 'melhorRota': melhorRota, 'numeroRotas':len(paths), 'melhoresRotasLista': melhoresRotasLista})
      
 
