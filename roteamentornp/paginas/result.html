@@ -18,10 +18,9 @@
 
         .link {
             fill:none;
-            stroke: #DDD;
+            stroke: rgb(165, 161, 161);
             stroke-width:2px;
-        }
-        
+        } 
 
     </style> 
 </head>
@@ -62,7 +61,14 @@
         .attr("class", "dragLine hidden")
         .attr("d", "M0,0 L0,0");
 
-    svg.selectAll('circle')
+    
+    let groupPath = svg.append('g')
+                    .attr('render-order', -1);
+    
+    let groupCircle = svg.append('g')
+                    .attr('render-order', 1);
+
+    groupCircle.selectAll('circle')
         .data(nos)
         .enter()
         .append('circle')
@@ -107,12 +113,12 @@
         let keyNo = nos[i];
         let ligacoesDiretas = dados[keyNo];
         for(let j = 0; j < dados[keyNo].length; j++){
-            svg.append('path')
+            groupPath.append('path')
             .attr("d",function(d) {
                     if(ligacoesDiretas[j] != 0){   
                     let noCorrodenadasOrigem = coordenadasDoEstado[keyNo];
                     let noCoordenadasDestino = coordenadasDoEstado[ligacoesDiretas[j]];
-                    return "M" +(noCorrodenadasOrigem.x+19)+"," +noCorrodenadasOrigem.y +
+                    return "M" +(noCorrodenadasOrigem.x)+"," +noCorrodenadasOrigem.y +
                     "L" +(noCoordenadasDestino.x) +","+noCoordenadasDestino.y;
                     }
             })
@@ -121,7 +127,7 @@
     }
 
 
-let text = svg.selectAll('text')
+    let text = svg.selectAll('text')
             .data(nos)
             .enter()
             .append('text')
