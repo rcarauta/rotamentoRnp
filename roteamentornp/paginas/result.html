@@ -10,7 +10,7 @@
     <style>
     
     #chart{
-            width: 1000px;
+            width: 1200px;
             height: 1000px;
             background-color: #f7f7f7;
             margin: 25px auto;
@@ -26,8 +26,10 @@
 <script>
     let dados = {{ melhoresRotas }};
     let nos = [];
-    let chart_width = 1000;
+    let chart_width = 1200;
     let chart_height = 1000;
+    let posicaoInicialX = 0;
+    let posicaoInicialY = 100;
 
     for(let i = 0; i < Object.keys(dados).length; i++ ) {
        nos.push(Object.keys(dados)[i]);      
@@ -47,12 +49,24 @@
         .data(nos)
         .enter()
         .append('circle')
-        .attr('r', 30)
+        .attr('r', 20)
         .attr('cx',function(d, i){
-            return i * (chart_width/ nos.length);
+            if( i % 4 == 0 ) {
+                posicaoInicialX = 175;
+            }  else {
+                posicaoInicialX += 256; 
+            }
+
+            return posicaoInicialX;
         })
-        .attr('cy', function(d) {
-            return chart_height - d * 5;
+        .attr('cy', function(d, i) {
+            if(i % 4 == 0 && i != 0) {
+                posicaoInicialY += 200;
+            } else if(i == 0 ) {
+                posicaoInicialY = 100;
+            }
+
+            return posicaoInicialY;
         })
         .attr('fill', '#7ED26D')
         .attr('id', function(d){
