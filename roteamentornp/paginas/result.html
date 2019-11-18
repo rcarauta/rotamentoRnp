@@ -88,6 +88,35 @@
         );
     }
 
+let text = svg.selectAll('text')
+            .data(nos)
+            .enter()
+            .append('text')
+            .attr('x',function(d, i){
+                if( i % 4 == 0 ) {
+                    posicaoInicialX = 175;
+                }  
+                else {
+                    posicaoInicialX += 256; 
+                } 
+                return posicaoInicialX - 8;
+            })
+            .attr('y', function(d,i) {
+                if(i % 4 == 0 && i != 0) {
+                    posicaoInicialY += 200;
+                } else if(i == 0 ) {
+                    posicaoInicialY = 100;
+                }
+                return posicaoInicialY + 3;
+            })
+            .text(function(d) {
+                return d;
+            })
+            .attr('font-family', 'sans-serif')
+            .attr('font-size','15px')
+            .attr('fill','white')
+
+
 </script>
 </body>
 </html>
