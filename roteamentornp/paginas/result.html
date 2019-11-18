@@ -30,6 +30,7 @@
     let chart_height = 1000;
     let posicaoInicialX = 0;
     let posicaoInicialY = 100;
+    let coordenadasDoEstado = {};
 
     for(let i = 0; i < Object.keys(dados).length; i++ ) {
        nos.push(Object.keys(dados)[i]);      
@@ -56,7 +57,6 @@
             }  else {
                 posicaoInicialX += 256; 
             }
-
             return posicaoInicialX;
         })
         .attr('cy', function(d, i) {
@@ -65,6 +65,14 @@
             } else if(i == 0 ) {
                 posicaoInicialY = 100;
             }
+
+            if( i % 4 == 0 ) {
+                posicaoInicialX = 175;
+            }  else {
+                posicaoInicialX += 256; 
+            }
+
+            Object.assign(coordenadasDoEstado, {[d]: [posicaoInicialX,posicaoInicialY]});
 
             return posicaoInicialY;
         })
@@ -102,6 +110,7 @@ let text = svg.selectAll('text')
                 return posicaoInicialX - 8;
             })
             .attr('y', function(d,i) {
+                console.log(coordenadasDoEstado);
                 if(i % 4 == 0 && i != 0) {
                     posicaoInicialY += 200;
                 } else if(i == 0 ) {
