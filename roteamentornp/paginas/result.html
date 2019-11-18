@@ -32,9 +32,11 @@
     let posicaoInicialY = 100;
     let coordenadasDoEstado = {};
 
+
     for(let i = 0; i < Object.keys(dados).length; i++ ) {
        nos.push(Object.keys(dados)[i]);      
     }
+
 
     let svg = d3.select('#chart')
             .append('svg')
@@ -81,20 +83,30 @@
             return 'circle'+d;
         });
 
-    function updateDragLine() {
-        var coords = d3.mouse(d3.event.currentTarget);
-        dragLine.attr(
-            "d",
-            "M" +
-            mousedownNode.x +
-            "," +
-            mousedownNode.y +
-            "L" +
-            coords[0] +
-            "," +
-            coords[1]
-        );
+    function draLine() {
+        dragLine
     }
+
+    for(let i = 0; i < Object.keys(dados).length; i++) {
+            let keyNo = nos[i];
+            let ligacoesDiretas = dados[keyNo];
+            for(let j = 0; j < dados[keyNo].length; j++){
+                svg.append('path')
+                .attr("d",function(d) {
+                    console.log(ligacoesDiretas);
+                     if(ligacoesDiretas[j] != 0){   
+                        let noCorrodenadasOrigem = coordenadasDoEstado[keyNo];
+                        let noCoordenadasDestino = coordenadasDoEstado[ligacoesDiretas[j]];
+                        return "M" +(noCorrodenadasOrigem[0]+19)+"," +noCorrodenadasOrigem[1] +
+                      "L" +(noCoordenadasDestino[0]) +","+noCoordenadasDestino[1];
+                     }
+                })
+                .attr('stroke',"black")
+                .attr('stroke-width','2');
+
+            }
+    }
+            
 
 let text = svg.selectAll('text')
             .data(nos)
