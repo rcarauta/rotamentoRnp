@@ -34,13 +34,10 @@
 
     <div id="chart"></div>
 
-
-    <div id="buttons">
-        <button id="0" onclick="startRoute(0)" type="button">Rota 1</button>
-        <button id="1" onclick="startRoute(1)" type="button">Rota 2</button>
-        <button id="2" onclick="startRoute(2)" type="button">Rota 3</button>
-        <button id="3" onclick="startRoute(3)" type="button">Rota 4</button>
-    </div>
+    <button id="button0" onclick="startRoute(0)" type="button">Rota 1</button>
+    <button id="button1" onclick="startRoute(1)" type="button">Rota 2</button>
+    <button id="button2" onclick="startRoute(2)" type="button">Rota 3</button>
+    <button id="button3" onclick="startRoute(3)" type="button">Rota 4</button>
 
     <script src="https://d3js.org/d3.v5.min.js"></script> 
 <script>
@@ -145,8 +142,11 @@
     for(let i = 0; i < Object.keys(dados).length; i++) {
         let keyNo = nos[i];
         let ligacoesDiretas = dados[keyNo];
-        for(let j = 0; j < dados[keyNo].length; j++){
+        for(let j = 0; j < dados[keyNo].length; j++) {
            let path = groupPath.append('path')
+           .transition()
+           .duration(1000)
+           .delay(1000)
            .attr("d", function(d) {
                 if(ligacoesDiretas[j] != 0){   
                     let noCorrodenadasOrigem = coordenadasDoEstado[keyNo];
@@ -189,18 +189,18 @@
     }
 
    function startRoute(id) {
-        let rotaEscolhida = melhoresRotasLista[id];
-        for(let i = 0; i < rotaEscolhida.length -1; i++) {
-            let startPoint = rotaEscolhida[i];
-            let endPoint = rotaEscolhida[i+1];
-            let line = groupPath.select('line-'+startPoint+'-'+endPoint)
-                .attr('class','linkAnimation')
-                .transition()
-                .duration(1000);
-                
-                console.log(line);
-          
-        }
+        let button = d3.select('#button'+id)
+        .attr('class',function(){
+            console.log(id);
+            let rotaEscolhida = melhoresRotasLista[id];
+            for(let i = 0; i < rotaEscolhida.length -1; i++) {
+                let startPoint = rotaEscolhida[i];
+                let endPoint = rotaEscolhida[i+1];
+                d3.select("#line-"+startPoint+'-'+endPoint).attr("class", "linkAnimation");
+            }
+            return 'green';
+        })     
+        
    }
 
 </script>
