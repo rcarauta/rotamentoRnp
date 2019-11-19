@@ -19,7 +19,7 @@
         .link {
             fill:none;
             stroke: rgb(165, 161, 161);
-            stroke-width:2px;
+            stroke-width: 2px;
         } 
 
         .linkAnimation {
@@ -52,6 +52,7 @@
     let posicaoInicialY = 100;
     let coordenadasDoEstado = [];
     let melhoresRotasLista = {{ melhoresRotasLista }};
+    let mudancaX = 1;
 
     let Coordenate = function(id, x, y) {
         this.parent = parent;
@@ -71,11 +72,6 @@
             .attr('width',chart_width)
             .attr('height', chart_height);
 
-    let dragLine = svg
-        .append("path")
-        .attr("class", "dragLine hidden")
-        .attr("d", "M0,0 L0,0");
-
     
     let groupPath = svg.append('g')
                     .attr('render-order', -1)
@@ -84,7 +80,7 @@
     let groupCircle = svg.append('g')
                     .attr('render-order', 1);
 
-    groupCircle.selectAll('circle')
+   let circle = groupCircle.selectAll('circle')
         .data(nos)
         .enter()
         .append('circle')
@@ -116,6 +112,27 @@
         .attr('fill', '#7ED26D')
         .attr('id', function(d){
             return 'circle'+d;
+        })
+        .transition()
+        .duration(500)
+        .attr('cy',function(d, i){
+            i+=1;
+            if(i % 2 != 0) {
+                coordenadasDoEstado[d].y = coordenadasDoEstado[d].y - 50;
+            } 
+            return coordenadasDoEstado[d].y;
+        })
+        .attr('cx', function(d,i){
+            
+            if(mudancaX > 4 && mudancaX <= 8) {
+                coordenadasDoEstado[d].x = coordenadasDoEstado[d].x + 40;
+            } else if(mudancaX > 16 && mudancaX <= 20){
+                coordenadasDoEstado[d].x = coordenadasDoEstado[d].x + 40;
+            } else if(mudancaX > 24 && mudancaX <= 27) {
+                coordenadasDoEstado[d].x = coordenadasDoEstado[d].x + 40;
+            }
+            mudancaX += 1;
+            return coordenadasDoEstado[d].x;
         });
 
 
@@ -129,14 +146,14 @@
         let keyNo = nos[i];
         let ligacoesDiretas = dados[keyNo];
         for(let j = 0; j < dados[keyNo].length; j++){
-            groupPath.append('path')
-            .attr("d",function(d) {
-                    if(ligacoesDiretas[j] != 0){   
-                        let noCorrodenadasOrigem = coordenadasDoEstado[keyNo];
-                        let noCoordenadasDestino = coordenadasDoEstado[ligacoesDiretas[j]];
-                        return "M" +(noCorrodenadasOrigem.x)+"," +noCorrodenadasOrigem.y +
-                        "L" +(noCoordenadasDestino.x) +","+noCoordenadasDestino.y;
-                    }
+           let path = groupPath.append('path')
+           .attr("d", function(d) {
+                if(ligacoesDiretas[j] != 0){   
+                    let noCorrodenadasOrigem = coordenadasDoEstado[keyNo];
+                    let noCoordenadasDestino = coordenadasDoEstado[ligacoesDiretas[j]];
+                    return "M" +(noCorrodenadasOrigem.x)+"," +noCorrodenadasOrigem.y +
+                    "L" +(noCoordenadasDestino.x) +","+noCoordenadasDestino.y;
+                }
             })
             .attr("class", "link")
             .attr('id', function(d) {
@@ -154,21 +171,10 @@
             .enter()
             .append('text')
             .attr('x',function(d, i){
-                if( i % 4 == 0 ) {
-                    posicaoInicialX = 175;
-                }  
-                else {
-                    posicaoInicialX += 256; 
-                } 
-                return posicaoInicialX - 8;
+                return coordenadasDoEstado[d].x - 8;
             })
             .attr('y', function(d,i) {
-                if(i % 4 == 0 && i != 0) {
-                    posicaoInicialY += 200;
-                } else if(i == 0 ) {
-                    posicaoInicialY = 100;
-                }
-                return posicaoInicialY + 3;
+                return coordenadasDoEstado[d].y + 3;
             })
             .text(function(d) {
                 return d;
@@ -179,7 +185,7 @@
 
     
     function transform(d) {
-        return "translate(" + x(d.x) + "," + y(d.y) + ")";
+        return "translate(" + d.x + "," + d.y + ")";
     }
 
    function startRoute(id) {
@@ -187,8 +193,7 @@
         for(let i = 0; i < rotaEscolhida.length -1; i++) {
             let startPoint = rotaEscolhida[i];
             let endPoint = rotaEscolhida[i+1];
-            //let line  = document.getElementById('line-'+startPoint+'-'+endPoint);
-           let line = groupPath.select('line-'+startPoint+'-'+endPoint)
+            let line = groupPath.select('line-'+startPoint+'-'+endPoint)
                 .attr('class','linkAnimation')
                 .transition()
                 .duration(1000);
