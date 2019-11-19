@@ -11,7 +11,7 @@
     
     #chart{
             width: 1200px;
-            height: 1000px;
+            height: 600px;
             background-color: #f7f7f7;
             margin: 25px auto;
         }
@@ -22,11 +22,26 @@
             stroke-width:2px;
         } 
 
+        .linkAnimation {
+            fill: none;
+            stroke: #3CB371;
+            stroke-width: 3px;
+        }
+
     </style> 
 </head>
 <body>    
 
     <div id="chart"></div>
+
+
+    <div id="buttons">
+        <button id="0" onclick="startRoute(0)" type="button">Rota 1</button>
+        <button id="1" onclick="startRoute(1)" type="button">Rota 2</button>
+        <button id="2" onclick="startRoute(2)" type="button">Rota 3</button>
+        <button id="3" onclick="startRoute(3)" type="button">Rota 4</button>
+    </div>
+
     <script src="https://d3js.org/d3.v5.min.js"></script> 
 <script>
     let dados = {{ melhoresRotas }};
@@ -63,7 +78,8 @@
 
     
     let groupPath = svg.append('g')
-                    .attr('render-order', -1);
+                    .attr('render-order', -1)
+                    .attr('id','groupPath');
     
     let groupCircle = svg.append('g')
                     .attr('render-order', 1);
@@ -116,13 +132,19 @@
             groupPath.append('path')
             .attr("d",function(d) {
                     if(ligacoesDiretas[j] != 0){   
-                    let noCorrodenadasOrigem = coordenadasDoEstado[keyNo];
-                    let noCoordenadasDestino = coordenadasDoEstado[ligacoesDiretas[j]];
-                    return "M" +(noCorrodenadasOrigem.x)+"," +noCorrodenadasOrigem.y +
-                    "L" +(noCoordenadasDestino.x) +","+noCoordenadasDestino.y;
+                        let noCorrodenadasOrigem = coordenadasDoEstado[keyNo];
+                        let noCoordenadasDestino = coordenadasDoEstado[ligacoesDiretas[j]];
+                        return "M" +(noCorrodenadasOrigem.x)+"," +noCorrodenadasOrigem.y +
+                        "L" +(noCoordenadasDestino.x) +","+noCoordenadasDestino.y;
                     }
             })
-            .attr("class", "link");
+            .attr("class", "link")
+            .attr('id', function(d) {
+                if(ligacoesDiretas[j] != 0) {
+                    return 'line-'+keyNo+'-'+ligacoesDiretas[j];
+                }
+                return 'line';
+            });
         }
     }
 
@@ -160,6 +182,21 @@
         return "translate(" + x(d.x) + "," + y(d.y) + ")";
     }
 
+   function startRoute(id) {
+        let rotaEscolhida = melhoresRotasLista[id];
+        for(let i = 0; i < rotaEscolhida.length -1; i++) {
+            let startPoint = rotaEscolhida[i];
+            let endPoint = rotaEscolhida[i+1];
+            //let line  = document.getElementById('line-'+startPoint+'-'+endPoint);
+           let line = groupPath.select('line-'+startPoint+'-'+endPoint)
+                .attr('class','linkAnimation')
+                .transition()
+                .duration(1000);
+                
+                console.log(line);
+          
+        }
+   }
 
 </script>
 </body>
