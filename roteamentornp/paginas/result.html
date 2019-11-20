@@ -26,12 +26,17 @@
             fill: none;
             stroke: #3CB371;
             stroke-width: 3px;
-            animation: dash 3s infinite;
+            stroke-dasharray: 5 5;
+            animation: dash 4s infinite;
         }
 
         @keyframes dash {
+            from {
+                stroke: #3CB371;
+            }
             to {
                 stroke-dashoffset: -136;
+                stroke: #4da6ff;
             }
         }
 
@@ -196,18 +201,17 @@
     }
 
    function startRoute(id) {
+
+        groupPath.selectAll('path')
+                 .attr('class', 'link');
+
         let button = d3.select('#button'+id)
         .attr('class',function(){
             let rotaEscolhida = melhoresRotasLista[id];
             for(let i = 0; i < rotaEscolhida.length -1; i++) {
                 let startPoint = rotaEscolhida[i];
                 let endPoint = rotaEscolhida[i+1];
-                d3.select("#line-"+startPoint+'-'+endPoint).attr("class", "linkAnimation")
-                .transition()
-                .duration(2000)
-                .attr('stroke-dasharray',"5 5");
-
-
+                d3.select("#line-"+startPoint+'-'+endPoint).attr("class", "linkAnimation");
             }
 
             return 'green';
