@@ -5,6 +5,8 @@ from django.template.response import TemplateResponse
 from roteamentornp.rotas.services import ProcuraMelhorRota
 from roteamentornp.rotas.services import EstadosService
 from roteamentornp.rotas.services import MontaRota
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 def index(request):
     estado = EstadosService()

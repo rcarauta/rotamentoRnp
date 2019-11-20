@@ -61,6 +61,13 @@
     let posicaoInicialY = 100;
     let coordenadasDoEstado = [];
     let melhoresRotasLista = {{ melhoresRotasLista }};
+    let listaEstados = [{"id": 1, "estado": "AC"}, {"id": 2, "estado": "AL"}, {"id": 3, "estado": "AM"}, {"id": 4, "estado": "AP"}, 
+                        {"id": 5, "estado": "BA"}, {"id": 6, "estado": "CE"}, {"id": 7, "estado": "DF"}, {"id": 8, "estado": "ES"}, 
+                        {"id": 9, "estado": "GO"}, {"id": 10, "estado": "MA"}, {"id": 11, "estado": "MG"}, {"id": 12, "estado": "MS"}, 
+                        {"id": 13, "estado": "MT"}, {"id": 14, "estado": "PA"}, {"id": 15, "estado": "PB"}, {"id": 16, "estado": "PE"}, 
+                        {"id": 17, "estado": "PI"}, {"id": 18, "estado": "PR"}, {"id": 19, "estado": "RJ"}, {"id": 20, "estado": "RN"}, 
+                        {"id": 21, "estado": "RO"}, {"id": 22, "estado": "RR"}, {"id": 23, "estado": "RS"}, {"id": 24, "estado": "SC"}, 
+                        {"id": 25, "estado": "SE"}, {"id": 26, "estado": "SP"}, {"id": 27, "estado": "TO"}];
     let mudancaX = 1;
 
     let Coordenate = function(id, x, y) {
@@ -189,13 +196,19 @@
                 return coordenadasDoEstado[d].y + 3;
             })
             .text(function(d) {
-                return d;
+                let value = getCountryByCode(d);
+                return value[0].estado;
             })
             .attr('font-family', 'sans-serif')
             .attr('font-size','15px')
             .attr('fill','white')
 
     
+    function getCountryByCode(id) {
+        return listaEstados.filter(
+            function(listaEstados){ return listaEstados.id == id });
+    }
+
     function transform(d) {
         return "translate(" + d.x + "," + d.y + ")";
     }
