@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from roteamentornp.rotas.views import index, montarRota 
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -23,3 +25,6 @@ urlpatterns = [
     path('rotas/', index),
     path('rotas/montar', montarRota)
 ]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+

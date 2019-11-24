@@ -21,10 +21,13 @@ def montarRota(request):
      melhorRota = rota.montarRota(paths)
      melhoresRotasLista  = rota.dfinirMelhoresRotas(4, paths)
      melhoresRotas = rota.criarDicionarioRotaSelecionada(melhoresRotasLista)
+     estado = EstadosService()
+     todos = estado.findAllEstados()
      print(melhoresRotasLista)
      print(melhoresRotas)
      print(len(paths))
      print(melhorRota)
-     return render(request, 'result.html', {'melhoresRotas': melhoresRotas, 'melhorRota': melhorRota, 'numeroRotas':len(paths), 'melhoresRotasLista': melhoresRotasLista})
+     result = True
+     return render(request, 'index.html', {'melhoresRotas': melhoresRotas, 'melhorRota': melhorRota, 'numeroRotas':len(paths), 'melhoresRotasLista': melhoresRotasLista, 'result':result, 'options':todos})
      
 

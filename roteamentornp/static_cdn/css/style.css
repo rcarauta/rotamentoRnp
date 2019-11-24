@@ -1,0 +1,109 @@
+* {
+    padding:0;
+    margin:0;
+    vertical-align:baseline;
+    list-style:none;
+    border:0
+    }
+
+    html, body {height:100%;}
+
+    
+    /*debug*/
+    /*
+    .nome_da_classe{
+
+        border:1px solid black;
+        height:100px;
+    }
+    
+    
+    */
+    
+    /*Topo do site*/
+    .topo{
+        
+        height: 100px;
+    }
+
+    .menubox {
+        
+        width: 100%;
+        background: white;
+        overflow: auto;
+    }
+
+    .menu ul{
+        padding: 0;
+        margin: 0 0 0 150px;
+        list-style: none;
+    }
+
+    .menu ul li{
+        float: left;
+    }
+
+    .menu ul li a{
+        width: 100px;
+        display: block;
+        padding: 40px 100px;
+        text-decoration: none;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: medium;
+        color:black;
+        text-align: center;
+    }
+
+    .menu ul li a:hover{
+        text-decoration:none;
+        transition: 0.5s;
+        text-transform: uppercase;
+
+    }
+    /*Logotipo*/
+
+    .logotipo {
+        position: absolute;
+        margin-top: 15px;
+        margin-left: 10px;
+    }
+
+    /*Meio do site*/
+
+    .container_imagem_panorama {
+        height: 833px;
+    }
+
+    .imagem_panorama img{
+        position: absolute;
+        top: 50%; 
+        left: 60%;
+        transform: translate(-50%, -50%);
+    }
+
+    
+    .pesquisa_form{
+        
+        height:700px;
+        width: 460px;
+        position: absolute;
+        top: 50%; 
+        left: 13%;
+        transform: translate(-50%, -50%);
+    }
+
+    
+
+    .link_disponivel h3 img{
+        width: 30px;
+        height: 25px;
+    }
+    
+    /*footer*/
+
+    .footer {
+        position:absolute;
+        bottom:0;
+        width:100%;
+        text-align: center;
+    }
