@@ -62,6 +62,8 @@ class MontaRota:
         return False
 
 
+    def changeListDictonaryToEstado(self,dict=[]):
+        pass
 
     def add_aresta(self, src, dest):
         cost = self.add_pesos(src,dest)

@@ -1,6 +1,15 @@
-<link href="/static/css/style.css" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Result</title>
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>    
 
-<div id="chart"></div>
+    <div id="chart"></div>
 
     <button id="button0" onclick="startRoute(0)" type="button">Rota 1</button>
     <button id="button1" onclick="startRoute(1)" type="button">Rota 2</button>
@@ -17,26 +26,27 @@
     let posicaoInicialY = 100;
     let coordenadasDoEstado = [];
     let melhoresRotasLista = {{ melhoresRotasLista }};
+    let listaEstados = [{"id": 1, "estado": "AC"}, {"id": 2, "estado": "AL"}, {"id": 3, "estado": "AM"}, {"id": 4, "estado": "AP"}, 
+                        {"id": 5, "estado": "BA"}, {"id": 6, "estado": "CE"}, {"id": 7, "estado": "DF"}, {"id": 8, "estado": "ES"}, 
+                        {"id": 9, "estado": "GO"}, {"id": 10, "estado": "MA"}, {"id": 11, "estado": "MG"}, {"id": 12, "estado": "MS"}, 
+                        {"id": 13, "estado": "MT"}, {"id": 14, "estado": "PA"}, {"id": 15, "estado": "PB"}, {"id": 16, "estado": "PE"}, 
+                        {"id": 17, "estado": "PI"}, {"id": 18, "estado": "PR"}, {"id": 19, "estado": "RJ"}, {"id": 20, "estado": "RN"}, 
+                        {"id": 21, "estado": "RO"}, {"id": 22, "estado": "RR"}, {"id": 23, "estado": "RS"}, {"id": 24, "estado": "SC"}, 
+                        {"id": 25, "estado": "SE"}, {"id": 26, "estado": "SP"}, {"id": 27, "estado": "TO"}];
     let mudancaX = 1;
-
     let Coordenate = function(id, x, y) {
         this.parent = parent;
         this.id = id;
         this.x = x || 0;
         this.y = y || 0;
     }
-
-
     for(let i = 0; i < Object.keys(dados).length; i++ ) {
        nos.push(Object.keys(dados)[i]);      
     }
-
-
     let svg = d3.select('#chart')
             .append('svg')
             .attr('width',chart_width)
             .attr('height', chart_height);
-
     
     let groupPath = svg.append('g')
                     .attr('render-order', -1)
@@ -44,7 +54,6 @@
     
     let groupCircle = svg.append('g')
                     .attr('render-order', 1);
-
    let circle = groupCircle.selectAll('circle')
         .data(nos)
         .enter()
@@ -64,7 +73,6 @@
             } else if(i == 0 ) {
                 posicaoInicialY = 100;
             }
-
             if( i % 4 == 0 ) {
                 posicaoInicialX = 175;
             }  else {
@@ -99,14 +107,10 @@
             mudancaX += 1;
             return coordenadasDoEstado[d].x;
         });
-
-
     let link = d3.line()
             .x(function(d) { return d.x; })
             .y(function(d) { return d.y; })
      .curve(d3.curveLinear);
-
-
     for(let i = 0; i < Object.keys(dados).length; i++) {
         let keyNo = nos[i];
         let ligacoesDiretas = dados[keyNo];
@@ -132,8 +136,6 @@
             });
         }
     }
-
-
     let text = svg.selectAll('text')
             .data(nos)
             .enter()
@@ -145,48 +147,35 @@
                 return coordenadasDoEstado[d].y + 3;
             })
             .text(function(d) {
-                return d;
+                let value = getCountryByCode(d);
+                return value[0].estado;
             })
             .attr('font-family', 'sans-serif')
             .attr('font-size','15px')
             .attr('fill','white')
-
     
+    function getCountryByCode(id) {
+        return listaEstados.filter(
+            function(listaEstados){ return listaEstados.id == id });
+    }
     function transform(d) {
         return "translate(" + d.x + "," + d.y + ")";
     }
-
    function startRoute(id) {
+        groupPath.selectAll('path')
+                 .attr('class', 'link');
         let button = d3.select('#button'+id)
         .attr('class',function(){
-            console.log(id);
             let rotaEscolhida = melhoresRotasLista[id];
             for(let i = 0; i < rotaEscolhida.length -1; i++) {
                 let startPoint = rotaEscolhida[i];
                 let endPoint = rotaEscolhida[i+1];
-                let linePath = d3.select("#line-"+startPoint+'-'+endPoint)
-                .attr("class", "linkAnimation")
-                .attr('stroke-dasharray','40 40');
-               
-                animation(linePath);
-
-                
+                d3.select("#line-"+startPoint+'-'+endPoint).attr("class", "linkAnimation");
             }
             return 'green';
         })     
         
    }
-
-   function animation(path) {
-        path
-        .transition()
-        .duration(2000)
-        .attr()
-        .each('end', animation);
-    }
- 
-
 </script>
 </body>
 </html>
-
