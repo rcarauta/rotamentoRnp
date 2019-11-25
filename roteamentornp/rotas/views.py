@@ -11,7 +11,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 def index(request):
     estado = EstadosService()
     todos = estado.findAllEstados()
-    return render(request, 'index.html',{'options':todos})
+    return render(request, 'index.html',{'options':todos, 'numeroRotas':0})
 
 
 def montarRota(request):
@@ -25,11 +25,13 @@ def montarRota(request):
      melhoresRotas = rota.criarDicionarioRotaSelecionada(melhoresRotasLista)
      estado = EstadosService()
      todos = estado.findAllEstados()
+     lsitaLatenciaMax = rota.getListaLatenciaMax()
      print(melhoresRotasLista)
      print(melhoresRotas)
      print(len(paths))
      print(melhorRota)
+     print(lsitaLatenciaMax)
      result = True
-     return render(request, 'index.html', {'melhoresRotas': melhoresRotas, 'melhorRota': melhorRota, 'numeroRotas':len(paths), 'melhoresRotasLista': melhoresRotasLista, 'result':result, 'options':todos})
+     return render(request, 'index.html', {'melhoresRotas': melhoresRotas, 'melhorRota': melhorRota, 'numeroRotas':len(paths), 'melhoresRotasLista': melhoresRotasLista, 'result':result, 'options':todos, 'listaLatenciaMax': lsitaLatenciaMax})
      
 

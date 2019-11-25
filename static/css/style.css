@@ -129,7 +129,7 @@
         stroke: #3CB371;
         stroke-width: 3px;
         stroke-dasharray: 5 5;
-        animation: dash 4s infinite;
+        animation: dash 4s ease-in-out infinite;
     }
 
     @keyframes dash {

@@ -25,10 +25,11 @@ class MontaRota:
         self.vertices =  Estado.objects.all()
         self.grafo = defaultdict(list)
         self.vertexes = defaultdict(list)
+        self.listaLatenciaMax = []
     
 
     def add_pesos(self, src, dest):
-        rotas = No.objects.filter(data_migration__date=datetime.date(2018, 9, 3), pop_dest_id=dest, pop_env_id=src)
+        rotas = No.objects.filter(data_migration__year='2018',data_migration__month='09',data_migration__day='03', pop_dest_id=dest, pop_env_id=src)
         if len(rotas) == 0:
             return 99999999
         return rotas[0].lat_max
@@ -62,9 +63,6 @@ class MontaRota:
         return False
 
 
-    def changeListDictonaryToEstado(self,dict=[]):
-        pass
-
     def add_aresta(self, src, dest):
         cost = self.add_pesos(src,dest)
         self.grafo[src].append([dest, cost])
@@ -96,12 +94,13 @@ class MontaRota:
             elif pesoNo < menorPeso:
                 menorPeso = pesoNo
                 melhorRota = paths[i]
-
-        return melhorRota
+        self.listaLatenciaMax.append(menorPeso)
+        return melhorRota 
  
 
 
     def dfinirMelhoresRotas(self, numeroRotas, paths=[]):
+        self.listaLatenciaMax.clear()
         melhoresRotas = []
         while numeroRotas > 0:
             rota = self.montarRota(paths)
@@ -111,6 +110,12 @@ class MontaRota:
             numeroRotas -=1
         return melhoresRotas
 
+
+    def getListaLatenciaMax(self):
+        resultInt = []
+        for valor in range(len(self.listaLatenciaMax)):
+            resultInt.append(int(self.listaLatenciaMax[valor]))
+        return resultInt
 
 
     def getKey(self, val, dictonary):

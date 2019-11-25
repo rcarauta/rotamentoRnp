@@ -47,6 +47,7 @@
 
                 <script>
                     let dados = {{ melhoresRotas }};
+                    let listaLatenciaMaxima = {{ listaLatenciaMax }};
                     let nos = [];
                     let chart_width = 1200;
                     let chart_height = 1000;
@@ -201,7 +202,10 @@
                                 d3.select("#line-"+startPoint+'-'+endPoint).attr("class", "linkAnimation");
                             }
                             return 'green';
-                        })     
+                        })  
+
+                    var h3 = document.getElementById('latenciaMax');
+                    h3.innerHTML = 'Latência Máxima: '+listaLatenciaMaxima[id] + 'ms';  
                         
                 }
                                   
@@ -238,8 +242,9 @@
                     <input class="btn btn-primary btn-sm" type="submit" value="Pesquisar" />      
                 </form>
                 <div class="painel_resultados">
+                    <h3>Número de Rotas: {{ numeroRotas }} </h3>
                     <h3>Latência Miníma: </h3>
-                    <h3>Latência Máxima: </h3>
+                    <h3 id="latenciaMax">Latência Máxima: </h3>
                     <h3>Perda: </h3>
                     <div class="link_disponivel">
                         <h3>Link Disponível <img src="/static/imagens/checked.svg"></h3>
