@@ -19,17 +19,18 @@ class ProcuraMelhorRota:
 
 class MontaRota:
 
-    def __init__(self):
+    def __init__(self, dataPesquisa):
         self.vertices_id =  Estado.objects.all().values_list('id', flat=True)
         self.list_vertice_id = list(self.vertices_id)
         self.vertices =  Estado.objects.all()
         self.grafo = defaultdict(list)
         self.vertexes = defaultdict(list)
         self.listaLatenciaMax = []
+        self.dataSeparada = dataPesquisa.split('-')
     
 
     def add_pesos(self, src, dest):
-        rotas = No.objects.filter(data_migration__year='2018',data_migration__month='09',data_migration__day='03', pop_dest_id=dest, pop_env_id=src)
+        rotas = No.objects.filter(data_migration__year=self.dataSeparada[0],data_migration__month=self.dataSeparada[1],data_migration__day=self.dataSeparada[2], pop_dest_id=dest, pop_env_id=src)
         if len(rotas) == 0:
             return 99999999
         return rotas[0].lat_max

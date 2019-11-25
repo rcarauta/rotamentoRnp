@@ -17,7 +17,8 @@ def index(request):
 def montarRota(request):
      origem =  request.POST.get("origem","")
      destino = request.POST.get("destino", "")
-     rota = MontaRota()
+     dataPesquisa = request.POST.get("dataPesquisa", "")
+     rota = MontaRota(dataPesquisa)
      rota.montarGrafo()
      paths = rota.findAllPaths(int(origem), int(destino))
      melhorRota = rota.montarRota(paths)
