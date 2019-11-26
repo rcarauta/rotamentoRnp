@@ -1,12 +1,14 @@
 from django.db import models
 
 
+# Classe para referenciar o Modelo de dados da tabela rotas_estado
 class Estado(models.Model):
     estado = models.CharField(max_length=100)
 
     def __unicode__(self):
-        return self.estado
+        return self.estado 
 
+# Classe para referenciar o Modelo de dados da tabela rota_no
 class No(models.Model):
     data_migration  = models.DateTimeField()
     pop_env = models.ForeignKey(Estado, null=True,related_name="pop_env_estado", on_delete=models.SET_NULL)
@@ -25,6 +27,7 @@ class No(models.Model):
         return self.data_migration
 
 
+# Classe para referenciar o Modelo de dados da tabela rotas_ligacao
 class Ligacao(models.Model):
     origem = models.ForeignKey(Estado, null=True,related_name="origem_estado", on_delete=models.SET_NULL)
     destino = models.ForeignKey(Estado, null=True,related_name="destino_estado", on_delete=models.SET_NULL)

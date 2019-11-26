@@ -15,14 +15,14 @@ def index(request):
 
 
 def montarRota(request):
-     origem =  request.POST.get("origem","")
-     destino = request.POST.get("destino", "")
-     dataPesquisa = request.POST.get("dataPesquisa", "")
-     rota = MontaRota(dataPesquisa)
-     rota.montarGrafo()
-     paths = rota.findAllPaths(int(origem), int(destino))
-     melhorRota = rota.montarRota(paths)
-     melhoresRotasLista  = rota.dfinirMelhoresRotas(4, paths)
+     origem =  request.POST.get("origem","") # Pega o valor enviado via post do nó de origem
+     destino = request.POST.get("destino", "") # Pega o valor enviado via post do nó de destino
+     dataPesquisa = request.POST.get("dataPesquisa", "") # pega o valor enviado via post do nó da data da pesquisa
+     rota = MontaRota(dataPesquisa) # instancia a classe MontaRota com a data de pesquisa
+     rota.montarGrafo() # Monta todas as rotas que tem ligação direta
+     paths = rota.findAllPaths(int(origem), int(destino)) # Monta todas as possíveis rotas entre a origem e o destino e adiciona me uma matriz
+     melhorRota = rota.montarRota(paths) # Define qual a melhor rota 
+     melhoresRotasLista  = rota.dfinirMelhoresRotas(4, paths) # Define o array com as melhores  rotas 
      melhoresRotas = rota.criarDicionarioRotaSelecionada(melhoresRotasLista)
      estado = EstadosService()
      todos = estado.findAllEstados()
