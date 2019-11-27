@@ -12,7 +12,9 @@
 
   </head>
   <body>
+     <!-- Script para utilização do d3--> 
     <script src="https://d3js.org/d3.v5.min.js"></script> 
+    <!-- div para criação do layout e do menu de navegação da RNP -->
     <div class="container=fluid">
         <div class="topo">
             <div class="logotipo">
@@ -28,11 +30,11 @@
             </div>
         </div>
     </div>
-
+    <!-- Div principal com a div do svg e com os botões -->
     <div class="container_imagem_panorama">
-        <!--Div para a imagem do panorama-->
+        <!--Div para as rotas da RNP-->
         <div class="imagem_panorama">
-           
+           <!-- comando if para verificar se foi clicado no botão pesquisar e retorno na tela -->
             {% if result %}
                 <div id="chart"></div>
 
@@ -45,24 +47,27 @@
                 <button class="btn btn-primary btn-sm" id="button3" onclick="startRoute(3)" 
                 type="button">Rota 4</button>
 
+                <!-- Script de criação do svg -->
                 <script>
-                    let dados = {{ melhoresRotas }};
-                    let listaLatenciaMaxima = {{ listaLatenciaMax }};
-                    let nos = [];
-                    let chart_width = 1200;
-                    let chart_height = 1000;
-                    let posicaoInicialX = 0;
-                    let posicaoInicialY = 100;
-                    let coordenadasDoEstado = [];
-                    let melhoresRotasLista = {{ melhoresRotasLista }};
+                    let dados = {{ melhoresRotas }}; // pega a lista das melhores rotas que vem do retorno do metodo montarRota da view do python
+                    let listaLatenciaMaxima = {{ listaLatenciaMax }}; // pega a lista das latências máximas que vem do retorno do método montarRota da view do python
+                    let nos = []; // cria uma lista de nós vazia
+                    let chart_width = 1200; // define a largura do svg na tela
+                    let chart_height = 1000; // define a altura do svg na tela
+                    let posicaoInicialX = 0; // define a posição inicial no eixo x dos nós na tela 
+                    let posicaoInicialY = 100; // define a posição inicial no eixo y dos nós na tela
+                    let coordenadasDoEstado = []; // define uma lista com as coordenadas depois de inseridas
+                    let melhoresRotasLista = {{ melhoresRotasLista }}; // lista com as melhores rotas rtornadas do método montarRota da view do python
                     let listaEstados = [{"id": 1, "estado": "AC"}, {"id": 2, "estado": "AL"}, {"id": 3, "estado": "AM"}, {"id": 4, "estado": "AP"}, 
                                         {"id": 5, "estado": "BA"}, {"id": 6, "estado": "CE"}, {"id": 7, "estado": "DF"}, {"id": 8, "estado": "ES"}, 
                                         {"id": 9, "estado": "GO"}, {"id": 10, "estado": "MA"}, {"id": 11, "estado": "MG"}, {"id": 12, "estado": "MS"}, 
                                         {"id": 13, "estado": "MT"}, {"id": 14, "estado": "PA"}, {"id": 15, "estado": "PB"}, {"id": 16, "estado": "PE"}, 
                                         {"id": 17, "estado": "PI"}, {"id": 18, "estado": "PR"}, {"id": 19, "estado": "RJ"}, {"id": 20, "estado": "RN"}, 
                                         {"id": 21, "estado": "RO"}, {"id": 22, "estado": "RR"}, {"id": 23, "estado": "RS"}, {"id": 24, "estado": "SC"}, 
-                                        {"id": 25, "estado": "SE"}, {"id": 26, "estado": "SP"}, {"id": 27, "estado": "TO"}];
+                                        {"id": 25, "estado": "SE"}, {"id": 26, "estado": "SP"}, {"id": 27, "estado": "TO"}]; // todos os estados em formado de lista
                     let mudancaX = 1;
+
+                    // objeto de coordenadas para guardar as coordenadas do nó
                     let Coordenate = function(id, x, y) {
                         this.parent = parent;
                         this.id = id;
@@ -71,11 +76,11 @@
                     }
                     for(let i = 0; i < Object.keys(dados).length; i++ ) {
                     nos.push(Object.keys(dados)[i]);      
-                    }
+                    } // adiciona o valor dos nós a lista de nós
                     let svg = d3.select('#chart')
                             .append('svg')
                             .attr('width',chart_width)
-                            .attr('height', chart_height);
+                            .attr('height', chart_height); // Cria o svg na div com id chart com a aulta e largura informadas pelas variáveis
                     
                     let groupPath = svg.append('g')
                                     .attr('render-order', -1)
