@@ -38,22 +38,22 @@ class MontaRota:
             return 99999999
         return rotas[0].lat_max # retorna a latência máxima da rota que foi buscada na consulta
         
-
+    # Cria um dicionaŕio com as melhores selecionadas e coloca em um dicionário para as rotas diretamente selecionadaas
     def criarDicionarioRotaSelecionada(self,melhoresRotas):
-        rotasDictionary = defaultdict(list)
+        rotasDictionary = defaultdict(list) # cria um dicionário das rotas
         ultimaRota = []
-        for rota in range(len(melhoresRotas)):
-            listRota = melhoresRotas[rota]
+        for rota in range(len(melhoresRotas)): # faz um loop pelas melhores rotas
+            listRota = melhoresRotas[rota] # coloca a cada rota em uma lista de rotas
             contador = 0
             ultimaRota = listRota
-            for item in range(len(listRota) - 1):
-                itemArray = listRota[item]
+            for item in range(len(listRota) - 1): # faz um for entre os elementos das rotas
+                itemArray = listRota[item] # verifica o item da rota
                 contador+=1
-                if not self.verifyHasItemInDictonary(rotasDictionary, itemArray, listRota[contador]):
-                   rotasDictionary[itemArray].append(listRota[contador])
+                if not self.verifyHasItemInDictonary(rotasDictionary, itemArray, listRota[contador]): # verifica se o item e o item posterior já não estão no dicionário
+                   rotasDictionary[itemArray].append(listRota[contador]) # aadiciona o item e o item posterior para o dicionaŕio
 
-        rotasDictionary[ultimaRota[len(ultimaRota) -1]].append(0)
-        return dict(rotasDictionary)
+        rotasDictionary[ultimaRota[len(ultimaRota) -1]].append(0) # aciciona a ultima rota no dicionario
+        return dict(rotasDictionary) # retrona o dicionario 
 
 
 
@@ -102,19 +102,19 @@ class MontaRota:
         return melhorRota # Retorna a melhor rota dentre todas as rotas possíveis
  
 
-
+    # define as melhores rotas selecionadas de acordo com o total de rotas e o número de rotas a serem utilizadas
     def dfinirMelhoresRotas(self, numeroRotas, paths=[]):
-        self.listaLatenciaMax.clear()
-        melhoresRotas = []
+        self.listaLatenciaMax.clear() # limpa a lista de latência máxima para não duplicar a melhor latência
+        melhoresRotas = [] # cria a lista de melhores rotas 
         while numeroRotas > 0:
-            rota = self.montarRota(paths)
-            index = paths.index(rota)
-            paths.pop(index)
-            melhoresRotas.append(rota)
-            numeroRotas -=1
-        return melhoresRotas
+            rota = self.montarRota(paths) # seleciona a melhor rota
+            index = paths.index(rota) # verifica o indice da melhor rota
+            paths.pop(index) # remove a melhor rota da lista de paths
+            melhoresRotas.append(rota) # adiciona a melhor rota na lista de melhores rotas
+            numeroRotas -=1 # decrementa o numero de rotas
+        return melhoresRotas # retorna as melhores rotas
 
-
+    
     def getListaLatenciaMax(self):
         resultInt = []
         for valor in range(len(self.listaLatenciaMax)):
