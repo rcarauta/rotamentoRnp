@@ -84,76 +84,80 @@
                     
                     let groupPath = svg.append('g')
                                     .attr('render-order', -1)
-                                    .attr('id','groupPath');
+                                    .attr('id','groupPath'); // criação de uma tag grupo g para os paths que serão inseridos
                     
                     let groupCircle = svg.append('g')
-                                    .attr('render-order', 1);
-                let circle = groupCircle.selectAll('circle')
+                                    .attr('render-order', 1); // criação de uma tag grupo g para os circles que serão inseridos 
+
+                let circle = groupCircle.selectAll('circle') // criação dos circulos dentro do grupo de circulos
                         .data(nos)
                         .enter()
                         .append('circle')
                         .attr('r', 20)
                         .attr('cx',function(d, i){
-                            if( i % 4 == 0 ) {
+                            if( i % 4 == 0 ) { // colocar na posição x do svg de acordo com a posição. Está condição garante que apenas serão 
+                                               // colocados 4 ciruclos por linha
                                 posicaoInicialX = 175;
                             }  else {
-                                posicaoInicialX += 256; 
+                                posicaoInicialX += 256; // adiciona um espaçamento para o próximo circulo a ser inserido
                             }
-                            return posicaoInicialX;
+                            return posicaoInicialX; // retorna a posição do x do circulo
                         })
-                        .attr('cy', function(d, i) {
-                            if(i % 4 == 0 && i != 0) {
+                        .attr('cy', function(d, i) { // colocar o circulo na posição y de acordo com a condição
+                            if(i % 4 == 0 && i != 0) { // Condição para mudar a posição y do ciruclo a cada 4 ciruclos inseridos na tela
                                 posicaoInicialY += 200;
                             } else if(i == 0 ) {
                                 posicaoInicialY = 100;
                             }
-                            if( i % 4 == 0 ) {
+                            if( i % 4 == 0 ) { // refaz a condição da posição x para inserit dentro do objeto
                                 posicaoInicialX = 175;
                             }  else {
                                 posicaoInicialX += 256; 
                             }
-                            Object.assign(coordenadasDoEstado, {[d]: new Coordenate(d, posicaoInicialX, posicaoInicialY)});
+                            Object.assign(coordenadasDoEstado, {[d]: new Coordenate(d, posicaoInicialX, posicaoInicialY)}); // insserção das coordenadas
+                            // dentro do objeto Coordenate com o id do nó e as coordenadas iniciais e finais do nó
                     
-                            return posicaoInicialY;
+                            return posicaoInicialY; // retorna a posicção y do nó
                         })
-                        .attr('fill', '#7ED26D')
+                        .attr('fill', '#7ED26D') // cor do circulo qeu será plotado na trela
                         .attr('id', function(d){
                             return 'circle'+d;
-                        })
-                        .transition()
+                        }) // criação do id para cada tag circle criada 
+                        .transition() // cria uma trasição para realocação dos circulos para que nenhum circulo fique em cima da linha
                         .duration(500)
                         .attr('cy',function(d, i){
                             i+=1;
-                            if(i % 2 != 0) {
-                                coordenadasDoEstado[d].y = coordenadasDoEstado[d].y - 50;
+                            if(i % 2 != 0) { // a cada dois ciruclos os segundo é reordenado sua posição
+                                coordenadasDoEstado[d].y = coordenadasDoEstado[d].y - 50; // reposiciona o circulo de acodo com a condição
                             } 
-                            return coordenadasDoEstado[d].y;
+                            return coordenadasDoEstado[d].y; // retoan a nova posição do nó no eixo y
                         })
-                        .attr('cx', function(d,i){
+                        .attr('cx', function(d,i){ // a posição no eixo x é modificada para que não fique em cima da linha
                             
-                            if(mudancaX > 4 && mudancaX <= 8) {
+                            if(mudancaX > 4 && mudancaX <= 8) { // omodifica a poiscão também no eixo x é feita uma condição a cada 4 estados 
                                 coordenadasDoEstado[d].x = coordenadasDoEstado[d].x + 40;
                             } else if(mudancaX > 16 && mudancaX <= 20){
                                 coordenadasDoEstado[d].x = coordenadasDoEstado[d].x + 40;
                             } else if(mudancaX > 24 && mudancaX <= 27) {
                                 coordenadasDoEstado[d].x = coordenadasDoEstado[d].x + 40;
                             }
-                            mudancaX += 1;
-                            return coordenadasDoEstado[d].x;
+                            mudancaX += 1; // variável controladora dos estados, começando em 0
+                            return coordenadasDoEstado[d].x; // retorna a nova coordenada x do circulo
                         });
-                    let link = d3.line()
+                    let link = d3.line() // criação da linha para ligação entre os nós
                             .x(function(d) { return d.x; })
                             .y(function(d) { return d.y; })
-                    .curve(d3.curveLinear);
-                    for(let i = 0; i < Object.keys(dados).length; i++) {
+                    .curve(d3.curveLinear); // seleciona uma curva para a linha quando necessário
+
+                    for(let i = 0; i < Object.keys(dados).length; i++) {//função for para ciração das linhas
                         let keyNo = nos[i];
                         let ligacoesDiretas = dados[keyNo];
-                        for(let j = 0; j < dados[keyNo].length; j++) {
-                        let path = groupPath.append('path')
-                        .transition()
-                        .duration(1000)
+                        for(let j = 0; j < dados[keyNo].length; j++) { // para cada um dos nós selecionados criar uma linha ate o nó destino
+                        let path = groupPath.append('path') // adiciona o path para ligar um nó origem e um nó destino
+                        .transition() // cria uma transição para plotar as linhas
+                        .duration(1000) // tem a duração e a demora de 1 segundo para lotar as linhas
                         .delay(1000)
-                        .attr("d", function(d) {
+                        .attr("d", function(d) { // criar a linhas de acordo com os valores de cada nó
                                 if(ligacoesDiretas[j] != 0){   
                                     let noCorrodenadasOrigem = coordenadasDoEstado[keyNo];
                                     let noCoordenadasDestino = coordenadasDoEstado[ligacoesDiretas[j]];
@@ -161,8 +165,8 @@
                                     "L" +(noCoordenadasDestino.x) +","+noCoordenadasDestino.y;
                                 }
                             })
-                            .attr("class", "link")
-                            .attr('id', function(d) {
+                            .attr("class", "link") // adiciona uma classe para colocar estilo na linha
+                            .attr('id', function(d) { // cria um id para cada linha plotada na tela
                                 if(ligacoesDiretas[j] != 0) {
                                     return 'line-'+keyNo+'-'+ligacoesDiretas[j];
                                 }
@@ -170,32 +174,32 @@
                             });
                         }
                     }
-                    let text = svg.selectAll('text')
+                    let text = svg.selectAll('text') // adiciona o texto dentro do circulo 
                             .data(nos)
                             .enter()
                             .append('text')
-                            .attr('x',function(d, i){
+                            .attr('x',function(d, i){ // coloca o texto dentro da posição x - 8 pixels
                                 return coordenadasDoEstado[d].x - 8;
                             })
-                            .attr('y', function(d,i) {
+                            .attr('y', function(d,i) { // coloca o texto na posição y mentos + 3 pixels
                                 return coordenadasDoEstado[d].y + 3;
                             })
-                            .text(function(d) {
+                            .text(function(d) { // adiciona o nome que será colocado dentro do circulo 
                                 let value = getCountryByCode(d);
-                                return value[0].estado;
+                                return value[0].estado; 
                             })
-                            .attr('font-family', 'sans-serif')
-                            .attr('font-size','15px')
-                            .attr('fill','white')
+                            .attr('font-family', 'sans-serif') // define a fonte a ser usada
+                            .attr('font-size','15px') // define o tamanho da fonte a ser usada
+                            .attr('fill','white') // define a cor da conte a ser usada //
                     
-                    function getCountryByCode(id) {
+                    function getCountryByCode(id) { // seleciona o nome do estado de acordo com o id passado
                         return listaEstados.filter(
                             function(listaEstados){ return listaEstados.id == id });
                     }
                     function transform(d) {
                         return "translate(" + d.x + "," + d.y + ")";
                     }
-                function startRoute(id) {
+                function startRoute(id) { // ao clicar em um dos botões inicia-se a animação para a rota selecionada
                         groupPath.selectAll('path')
                                 .attr('class', 'link');
                         let button = d3.select('#button'+id)
