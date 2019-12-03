@@ -51,6 +51,7 @@
                 <script>
                     let dados = {{ melhoresRotas }}; // pega a lista das melhores rotas que vem do retorno do metodo montarRota da view do python
                     let listaLatenciaMaxima = {{ listaLatenciaMax }}; // pega a lista das latências máximas que vem do retorno do método montarRota da view do python
+                    let listaLatenciaMinima = {{ listaLatenciaMin }};
                     let nos = []; // cria uma lista de nós vazia
                     let chart_width = 1200; // define a largura do svg na tela
                     let chart_height = 1000; // define a altura do svg na tela
@@ -214,7 +215,9 @@
                         })  
 
                     var h3 = document.getElementById('latenciaMax');
-                    h3.innerHTML = 'Latência Máxima: '+listaLatenciaMaxima[id] + 'ms';  
+                    h3.innerHTML = 'Latência Máxima: '+listaLatenciaMaxima[id] + 'ms'; 
+                    var h3Min = document.getElementById('latenciaMin');
+                    h3Min.innerHTML = 'Latência Mínima: '+ listaLatenciaMinima[id] + 'ms'; 
                         
                 }
                                   

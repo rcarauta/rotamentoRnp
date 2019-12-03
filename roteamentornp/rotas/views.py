@@ -29,8 +29,10 @@ def montarRota(request):
      estado = EstadosService() # Instâmncia a classe EstadoService
      todos = estado.findAllEstados() # Seleiona todos os estados
      lsitaLatenciaMax = rota.getListaLatenciaMax() # Verifica a lista com a latência máxima das rotas selecionadas
+     listaLatenciaMin = rota.getListaLatenciaMin() # Verifica a latencia mínima das rotas selecionadas
+     print(listaLatenciaMin)
      result = True # Faz aparecer o svg com as rotas na tela
      # retorna os dados para a tela 
-     return render(request, 'index.html', {'melhoresRotas': melhoresRotas, 'melhorRota': melhorRota, 'numeroRotas':len(paths), 'melhoresRotasLista': melhoresRotasLista, 'result':result, 'options':todos, 'listaLatenciaMax': lsitaLatenciaMax})
+     return render(request, 'index.html', {'melhoresRotas': melhoresRotas, 'melhorRota': melhorRota, 'numeroRotas':len(paths), 'melhoresRotasLista': melhoresRotasLista, 'result':result, 'options':todos, 'listaLatenciaMax': lsitaLatenciaMax, 'listaLatenciaMin':listaLatenciaMin})
      
 
