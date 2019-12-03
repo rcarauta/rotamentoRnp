@@ -124,6 +124,7 @@ class MontaRota:
     # define as melhores rotas selecionadas de acordo com o total de rotas e o número de rotas a serem utilizadas
     def dfinirMelhoresRotas(self, numeroRotas, paths=[]):
         self.listaLatenciaMax.clear() # limpa a lista de latência máxima para não duplicar a melhor latência
+        self.listaLatenciaMin.clear() # limpa a lista de latência mínima para não duplicar valores
         melhoresRotas = [] # cria a lista de melhores rotas 
         while numeroRotas > 0:
             rota = self.montarRota(paths) # seleciona a melhor rota
