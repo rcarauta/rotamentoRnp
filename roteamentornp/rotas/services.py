@@ -28,8 +28,10 @@ class MontaRota:
         self.grafo = defaultdict(list) # Cria um dicionário para os grafos
         self.vertexes = defaultdict(list) # Cria um dicionario para os vertices
         self.grafoLatenciaMin = defaultdict(list) # Cria o dicionario para a latencia minima das rotas escolhidas
+        self.grafoPerdaPacotes = defaultdict(list) # Cria o dicionario para a perda de pacotes das rotas escolhidas
         self.listaLatenciaMax = [] # Cria uma lista com as latências maximas das rotas escolhidas
         self.listaLatenciaMin = [] # Cruia uma lista com as latências mínimas das rotas escolhidas
+        self.listaPerdaPacotes = [] # Cria uma lista de perda de pacotes das rotas escolhidas
         self.dataSeparada = dataPesquisa.split('-') # Separa as datas para uso dia, mes e ano separado
     
 
@@ -40,6 +42,7 @@ class MontaRota:
             return 99999999
         else:
             self.listaLatenciaMin.append(rotas[0].lat_min) # diciona a latência mínima para ser utilizada
+            self.listaPerdaPacotes.append(rotas[0].perda_mdn)
         return rotas[0].lat_max # retorna a latência máxima da rota que foi buscada na consulta
         
     # Cria um dicionaŕio com as melhores selecionadas e coloca em um dicionário para as rotas diretamente selecionadaas
@@ -73,11 +76,15 @@ class MontaRota:
     # cria um dicionaŕio com as ligações e os vertices de cada ligação direta e adiciona o peso para cada ligação
     def add_aresta(self, src, dest):
         costLatMin = 99999999
+        costPerdaPacotes = 99999999
         cost = self.add_pesos(src,dest) # Adiciona o peso para a ligação direta
         if(len(self.listaLatenciaMin) > 0): # verifica se tem latência mínima
             costLatMin = self.listaLatenciaMin[0] 
-            self.listaLatenciaMin.clear()  
+            costPerdaPacotes = self.listaPerdaPacotes[0]
+            self.listaLatenciaMin.clear()
+            self.listaPerdaPacotes.clear()  
         self.grafoLatenciaMin[src].append([dest, costLatMin]) # Adiciona o o valor da latência mínima no grafo de latência mínima
+        self.grafoPerdaPacotes[src].append([dest, costPerdaPacotes]) # Adiciona o valor do custo dos pacotes 
         self.grafo[src].append([dest, cost]) # cria um mapa com os nós de origem destino e o peso da latencia máxima
         self.vertexes[src].append(dest) # adiciona o vertice de destino so dicionário vertexes
 
@@ -93,10 +100,12 @@ class MontaRota:
         menorPeso = 0 # define valor inicial do peso com 0
         melhorRota = [] # define valor da lista com a melhor rota vazia
         menorPesoLatenciaMin = 0
+        menorPerdaPacotes = 0
         for i in range(len(paths) - 1):
             rota = paths[i] # seleciona uma rota dentro de todas as rotas possíveis
             pesoNo = 0
             pesoLatenciaMin = 0
+            pesoPerdaPacotes = 0
             for j in range(len(rota) - 1):
                 origem = rota[j] # verifica o nó origem da rota
                 destino = rota[j+1] # verifica o destino direto desta origem
@@ -104,20 +113,24 @@ class MontaRota:
                 pesoNo = pesoNo + self.getKey(destino, itemPeso) # Rerupera o valor buscando pela chave
                 itemPeso = self.grafoLatenciaMin.get(origem)
                 pesoLatenciaMin = pesoLatenciaMin + self.getKey(destino, itemPeso) # Pega a soma da latência mínima
-
+                itemPeso = self.grafoPerdaPacotes.get(origem)
+                pesoPerdaPacotes = pesoPerdaPacotes + self.getKey(destino, itemPeso)
 
             if menorPeso == 0: # Verifica se o peso é igual a 0
                 menorPeso = pesoNo # Adiciona o valor do peso ao menor peso
                 menorPesoLatenciaMin = pesoLatenciaMin
                 melhorRota = paths[i] # adiciona a melhor rota como o path
+                menorPerdaPacotes = pesoPerdaPacotes
             elif pesoNo < menorPeso: # se o peso do nó for menor que o menor peso
                 menorPeso = pesoNo # peso atual do nó substitui o peso do menor peso
                 menorPesoLatenciaMin = pesoLatenciaMin
                 melhorRota = paths[i] # a melhor rota é substituida
+                menorPerdaPacotes = pesoPerdaPacotes
 
             
         self.listaLatenciaMax.append(menorPeso) # é adicioanda a lista de latência o menor peso 
         self.listaLatenciaMin.append(menorPesoLatenciaMin) # é adicionado a lista de menor latência de peso
+        self.listaPerdaPacotes.append(menorPerdaPacotes) # é adicionada a lista de menor perda de pacotes
         return melhorRota # Retorna a melhor rota dentre todas as rotas possíveis
  
 
@@ -125,6 +138,7 @@ class MontaRota:
     def dfinirMelhoresRotas(self, numeroRotas, paths=[]):
         self.listaLatenciaMax.clear() # limpa a lista de latência máxima para não duplicar a melhor latência
         self.listaLatenciaMin.clear() # limpa a lista de latência mínima para não duplicar valores
+        self.listaPerdaPacotes.clear() # limpa a lista de perda de pacotes para não cuplicar valores
         melhoresRotas = [] # cria a lista de melhores rotas 
         while numeroRotas > 0:
             rota = self.montarRota(paths) # seleciona a melhor rota
@@ -139,6 +153,13 @@ class MontaRota:
         resultInt = []
         for valor in range(len(self.listaLatenciaMin)):
             resultInt.append(int(self.listaLatenciaMin[valor]))
+        return resultInt
+
+
+    def getListaPerdaPacotes(self):
+        resultInt = []
+        for valor in range(len(self.listaPerdaPacotes)):
+            resultInt.append(int(self.listaPerdaPacotes[valor]))
         return resultInt
 
 

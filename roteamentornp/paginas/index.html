@@ -52,6 +52,7 @@
                     let dados = {{ melhoresRotas }}; // pega a lista das melhores rotas que vem do retorno do metodo montarRota da view do python
                     let listaLatenciaMaxima = {{ listaLatenciaMax }}; // pega a lista das latências máximas que vem do retorno do método montarRota da view do python
                     let listaLatenciaMinima = {{ listaLatenciaMin }};
+                    let listaPerdaPacotesArray = {{ listaPerdaPacotes }};
                     let nos = []; // cria uma lista de nós vazia
                     let chart_width = 1200; // define a largura do svg na tela
                     let chart_height = 1000; // define a altura do svg na tela
@@ -218,6 +219,8 @@
                     h3.innerHTML = 'Latência Máxima: '+listaLatenciaMaxima[id] + 'ms'; 
                     var h3Min = document.getElementById('latenciaMin');
                     h3Min.innerHTML = 'Latência Mínima: '+ listaLatenciaMinima[id] + 'ms'; 
+                    var h3Perda = document.getElementById('perdaPacotes');
+                    h3Perda.innerHTML = 'Perda: '+listaPerdaPacotesArray[id]+'ms';
                         
                 }
                                   
@@ -257,7 +260,7 @@
                     <h3>Número de Rotas: {{ numeroRotas }} </h3>
                     <h3 id="latenciaMin">Latência Miníma: </h3>
                     <h3 id="latenciaMax">Latência Máxima: </h3>
-                    <h3>Perda: </h3>
+                    <h3 id="perdaPacotes">Perda: </h3>
                     <div class="link_disponivel">
                         <h3>Link Disponível <img src="/static/imagens/checked.svg"></h3>
                 </div>
